@@ -24,7 +24,6 @@ async function getAccessToken() {
   });
 
   const data = await res.json();
-  console.log("TOKEN RESPONSE:", JSON.stringify(data));
   if (!data.access_token) throw new Error("Falha ao obter access token: " + JSON.stringify(data));
 
   cachedToken = data.access_token;
@@ -64,7 +63,6 @@ module.exports = async function handler(req, res) {
     );
 
     const data = await zohoRes.json();
-    console.log("ZOHO RESPONSE STATUS:", zohoRes.status);
 
     if (!zohoRes.ok) {
       return res.status(zohoRes.status).json({ error: data });
@@ -72,7 +70,6 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json(data);
   } catch (err) {
-    console.log("HANDLER ERROR:", err.message);
     return res.status(500).json({ error: err.message });
   }
 };
