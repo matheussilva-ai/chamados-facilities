@@ -45,7 +45,7 @@ module.exports = async function handler(req, res) {
     const params = new URLSearchParams({
       limit,
       from,
-      include: "contacts,assignee,departments",
+      include: "contacts,assignee,departments,accounts",
       sortBy: "createdTime",
     });
 
