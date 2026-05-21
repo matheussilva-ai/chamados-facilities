@@ -223,10 +223,11 @@
       border: 1px solid var(--border); flex-shrink: 0;
     }
     .status-open       { color: var(--accent);  background: var(--accent-dim); }
-    .status-inprogress { color: var(--yellow);  background: var(--yellow-dim); }
-    .status-resolved   { color: var(--green);   background: var(--green-dim); }
-    .status-closed     { color: var(--text3);   background: var(--surface2); }
     .status-onhold     { color: var(--purple);  background: var(--purple-dim); }
+    .status-escalated  { color: var(--red);     background: var(--red-dim); }
+    .status-closed     { color: var(--text3);   background: var(--surface2); }
+    .status-aguardando { color: var(--yellow);  background: var(--yellow-dim); }
+    .status-ghc        { color: var(--green);   background: var(--green-dim); }
     .status-other      { color: var(--text2);   background: var(--surface2); }
 
     .ticket-subject {
@@ -355,9 +356,12 @@
       <span class="filter-label">Status</span>
       <button class="btn-filter active" data-status="all">Todos</button>
       <button class="btn-filter" data-status="Open">Aberto</button>
-      <button class="btn-filter" data-status="In Progress">Em andamento</button>
-      <button class="btn-filter" data-status="On Hold">Aguardando</button>
-      <button class="btn-filter" data-status="Resolved">Resolvido</button>
+      <button class="btn-filter" data-status="Em execução pela GHC">GHC</button>
+      <button class="btn-filter" data-status="On Hold">On Hold</button>
+      <button class="btn-filter" data-status="Aguardando Fornecedor">Ag. Fornecedor</button>
+      <button class="btn-filter" data-status="Aguardando Entrega do Item">Ag. Entrega</button>
+      <button class="btn-filter" data-status="Escalated">Escalated</button>
+      <button class="btn-filter" data-status="Closed">Fechado</button>
     </div>
 
     <div class="filter-group">
@@ -450,11 +454,13 @@ function extractCG(subject) {
 
 // ── STATUS MAP ──
 const STATUS_MAP = {
-  'Open':        { label: 'Aberto',       cls: 'status-open' },
-  'In Progress': { label: 'Em andamento', cls: 'status-inprogress' },
-  'On Hold':     { label: 'Aguardando',   cls: 'status-onhold' },
-  'Resolved':    { label: 'Resolvido',    cls: 'status-resolved' },
-  'Closed':      { label: 'Fechado',      cls: 'status-closed' },
+  'Open':                    { label: 'Aberto',                  cls: 'status-open' },
+  'On Hold':                 { label: 'On Hold',                 cls: 'status-onhold' },
+  'Escalated':               { label: 'Escalated',               cls: 'status-escalated' },
+  'Closed':                  { label: 'Fechado',                 cls: 'status-closed' },
+  'Aguardando Entrega do Item': { label: 'Ag. Entrega',          cls: 'status-aguardando' },
+  'Aguardando Fornecedor':   { label: 'Ag. Fornecedor',          cls: 'status-aguardando' },
+  'Em execução pela GHC':    { label: 'Em execução GHC',         cls: 'status-ghc' },
 };
 
 function statusInfo(s) {
