@@ -39,8 +39,7 @@ module.exports = async function handler(req, res) {
   try {
     const token = await getAccessToken();
 
-    // URL mais simples possível — só limit
-    const url = `https://desk.zoho.com/api/v1/tickets?limit=50&include=contacts,assignee,departments`;
+    const url = `https://desk.zoho.com/api/v1/tickets?limit=100&include=contacts,assignee,departments,customFields`;
 
     const zohoRes = await fetch(url, {
       headers: {
@@ -50,9 +49,7 @@ module.exports = async function handler(req, res) {
     });
 
     const data = await zohoRes.json();
-
-    // Sempre retorna o corpo + status do Zoho para debug
-    return res.status(zohoRes.status).json({ _zohoStatus: zohoRes.status, ...data });
+    return res.status(zohoRes.status).json(data);
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
