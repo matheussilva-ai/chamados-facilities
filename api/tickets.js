@@ -24,7 +24,8 @@ async function getAccessToken() {
   });
 
   const data = await res.json();
-  if (!data.access_token) throw new Error("Falha ao obter access token");
+  console.log("TOKEN RESPONSE:", JSON.stringify(data));
+  if (!data.access_token) throw new Error("Falha ao obter access token: " + JSON.stringify(data));
 
   cachedToken = data.access_token;
   tokenExpiry = Date.now() + (data.expires_in - 60) * 1000;
