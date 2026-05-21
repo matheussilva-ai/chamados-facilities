@@ -39,7 +39,8 @@ module.exports = async function handler(req, res) {
   try {
     const token = await getAccessToken();
 
-    const url = `https://desk.zoho.com/api/v1/tickets?limit=100&include=contacts,assignee,departments`;
+    // Tenta buscar com cf (campos customizados) explicitamente
+    const url = `https://desk.zoho.com/api/v1/tickets?limit=100&include=contacts,assignee,departments&fields=id,ticketNumber,subject,status,createdTime,modifiedTime,dueDate,contact,assignee,department,cf`;
 
     const zohoRes = await fetch(url, {
       headers: {
