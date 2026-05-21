@@ -501,11 +501,24 @@ function fullName(obj) {
 // ── EXTRAIR CG DO ASSUNTO ──
 const CG_LIST = ['Morumbi', 'Tatuapé', 'Pinheiros', 'Paraíso', 'Alphaville', 'Anália Franco', 'Santana'];
 
-function extractCG(subject) {
+// Normaliza string removendo acentos para comparação
+function normalize(s) {
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function extractCG(subject, account) {
+  // 1. Tenta pelo campo account (mais confiável)
+  if (account && account.accountName) {
+    const acc = normalize(account.accountName);
+    for (const cg of CG_LIST) {
+      if (acc.includes(normalize(cg))) return cg;
+    }
+  }
+  // 2. Tenta pelo assunto
   if (!subject) return null;
-  const s = subject.toLowerCase();
+  const s = normalize(subject);
   for (const cg of CG_LIST) {
-    if (s.includes(cg.toLowerCase())) return cg;
+    if (s.includes(normalize(cg))) return cg;
   }
   return null;
 }
@@ -589,7 +602,7 @@ function renderTickets() {
   let filtered = allTickets;
   // Sempre filtra pela CG selecionada
   if (activeCG) {
-    filtered = filtered.filter(t => extractCG(t.subject) === activeCG);
+    filtered = filtered.filter(t => extractCG(t.subject, t.account) === activeCG);
   }
   // Filtro de status
   if (activeStatus === 'all') {
@@ -623,7 +636,7 @@ function renderTickets() {
     const st = statusInfo(t.status);
     const assignee = fullName(t.assignee) !== '—' ? fullName(t.assignee) : 'Não atribuído';
     const contact = fullName(t.contact);
-    const cg = extractCG(t.subject);
+    const cg = extractCG(t.subject, t.account);
 
     return `
     <div class="ticket-card" data-idx="${i}" style="animation-delay:${Math.min(i * 0.03, 0.3)}s">
@@ -698,7 +711,7 @@ function openModal(t) {
   const st = statusInfo(t.status);
   const assignee = fullName(t.assignee) !== '—' ? fullName(t.assignee) : 'Não atribuído';
   const contact = fullName(t.contact);
-  const cg = extractCG(t.subject);
+  const cg = extractCG(t.subject, t.account);
   const dept = t.department ? t.department.name : '—';
 
   document.getElementById('modalTitle').textContent = `#${t.ticketNumber || t.id}`;
