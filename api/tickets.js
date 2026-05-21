@@ -22,7 +22,7 @@ async function getAccessToken() {
   });
 
   const data = await res.json();
-  if (!data.access_token) throw new Error("Falha ao obter access token: " + JSON.stringify(data));
+  if (!data.access_token) throw new Error("Token error: " + JSON.stringify(data));
 
   cachedToken = data.access_token;
   tokenExpiry = Date.now() + (data.expires_in - 60) * 1000;
@@ -38,34 +38,22 @@ module.exports = async function handler(req, res) {
 
   try {
     const token = await getAccessToken();
-    const { limit = 100, from = 1 } = req.query;
 
-    // Busca sem filtro de status — filtragem feita no frontend
-    const params = new URLSearchParams({
-      limit: String(limit),
-      from: String(from),
-      include: "contacts,assignee,departments,accounts",
-      sortBy: "createdTime",
-      sortOrder: "desc",
+    // URL mais simples possível — só limit
+    const url = `https://desk.zoho.com/api/v1/tickets?limit=50&include=contacts,assignee,departments`;
+
+    const zohoRes = await fetch(url, {
+      headers: {
+        Authorization: `Zoho-oauthtoken ${token}`,
+        orgId: ZOHO_ORG_ID,
+      },
     });
-
-    const zohoRes = await fetch(
-      `https://desk.zoho.com/api/v1/tickets?${params.toString()}`,
-      {
-        headers: {
-          Authorization: `Zoho-oauthtoken ${token}`,
-          orgId: ZOHO_ORG_ID,
-        },
-      }
-    );
 
     const data = await zohoRes.json();
 
-    if (!zohoRes.ok) {
-      return res.status(zohoRes.status).json({ error: data });
-    }
+    // Sempre retorna o corpo + status do Zoho para debug
+    return res.status(zohoRes.status).json({ _zohoStatus: zohoRes.status, ...data });
 
-    return res.status(200).json(data);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
