@@ -805,11 +805,6 @@ document.getElementById('searchInput').addEventListener('input', e => {
   searchTimer = setTimeout(() => renderTickets(), 250);
 });
 
-document.getElementById('selectCG').addEventListener('change', e => {
-  activeCG = e.target.value;
-  renderTickets();
-});
-
 document.querySelectorAll('.cg-btn').forEach(btn => {
   btn.addEventListener('click', () => selectCG(btn.dataset.cg));
 });
