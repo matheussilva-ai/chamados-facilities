@@ -133,6 +133,19 @@
       color: var(--text3); white-space: nowrap;
     }
 
+    .select-cg {
+      height: 32px; padding: 0 28px 0 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+      cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239090a0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+      outline: none; transition: border-color 0.15s;
+    }
+    .select-cg:hover { border-color: var(--border2); color: var(--text); }
+    .select-cg option { background: #1e1e22; color: var(--text); }
     .btn-refresh {
       height: 32px; width: 32px;
       border-radius: var(--radius-sm);
@@ -202,6 +215,13 @@
       border-radius: 50%; background: currentColor;
     }
 
+    .cg-badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 7px; border-radius: 20px;
+      font-size: 11px; font-weight: 500;
+      color: var(--text2); background: var(--surface2);
+      border: 1px solid var(--border); flex-shrink: 0;
+    }
     .status-open       { color: var(--accent);  background: var(--accent-dim); }
     .status-inprogress { color: var(--yellow);  background: var(--yellow-dim); }
     .status-resolved   { color: var(--green);   background: var(--green-dim); }
@@ -340,6 +360,20 @@
       <button class="btn-filter" data-status="Resolved">Resolvido</button>
     </div>
 
+    <div class="filter-group">
+      <span class="filter-label">Unidade</span>
+      <select class="select-cg" id="selectCG">
+        <option value="all">Todas</option>
+        <option value="Morumbi">Morumbi</option>
+        <option value="Tatuapé">Tatuapé</option>
+        <option value="Pinheiros">Pinheiros</option>
+        <option value="Paraíso">Paraíso</option>
+        <option value="Alphaville">Alphaville</option>
+        <option value="Anália Franco">Anália Franco</option>
+        <option value="Santana">Santana</option>
+      </select>
+    </div>
+
     <div class="spacer"></div>
     <span class="count-badge" id="countBadge">—</span>
     <button class="btn-refresh" id="btnRefresh" title="Atualizar">
@@ -392,7 +426,27 @@ const BASE = '';  // mesmo domínio no Vercel
 
 let allTickets = [];
 let activeStatus = 'all';
+let activeCG = 'all';
 let searchQuery = '';
+
+// ── NOME SEM NULL ──
+function fullName(obj) {
+  if (!obj) return '—';
+  const parts = [obj.firstName, obj.lastName].filter(p => p && p !== 'null');
+  return parts.join(' ').trim() || '—';
+}
+
+// ── EXTRAIR CG DO ASSUNTO ──
+const CG_LIST = ['Morumbi', 'Tatuapé', 'Pinheiros', 'Paraíso', 'Alphaville', 'Anália Franco', 'Santana'];
+
+function extractCG(subject) {
+  if (!subject) return null;
+  const s = subject.toLowerCase();
+  for (const cg of CG_LIST) {
+    if (s.includes(cg.toLowerCase())) return cg;
+  }
+  return null;
+}
 
 // ── STATUS MAP ──
 const STATUS_MAP = {
@@ -457,6 +511,9 @@ function renderTickets() {
   const q = searchQuery.toLowerCase().trim();
 
   let filtered = allTickets;
+  if (activeCG !== 'all') {
+    filtered = filtered.filter(t => extractCG(t.subject) === activeCG);
+  }
   if (q) {
     filtered = filtered.filter(t =>
       (t.subject || '').toLowerCase().includes(q) ||
@@ -481,14 +538,16 @@ function renderTickets() {
 
   grid.innerHTML = filtered.map((t, i) => {
     const st = statusInfo(t.status);
-    const assignee = t.assignee ? t.assignee.firstName + ' ' + (t.assignee.lastName || '') : 'Não atribuído';
-    const contact = t.contact ? t.contact.firstName + ' ' + (t.contact.lastName || '') : '—';
+    const assignee = fullName(t.assignee) !== '—' ? fullName(t.assignee) : 'Não atribuído';
+    const contact = fullName(t.contact);
+    const cg = extractCG(t.subject);
 
     return `
     <div class="ticket-card" data-idx="${i}" style="animation-delay:${Math.min(i * 0.03, 0.3)}s">
       <div class="card-top">
         <span class="ticket-number">#${t.ticketNumber || t.id}</span>
         <span class="status-pill ${st.cls}">${st.label}</span>
+        ${cg ? `<span class="cg-badge">${cg}</span>` : ''}
       </div>
       <div class="ticket-subject">${escHtml(t.subject || '(sem assunto)')}</div>
       <div class="card-meta">
@@ -554,8 +613,9 @@ function setRefreshing(v) {
 // ── MODAL ──
 function openModal(t) {
   const st = statusInfo(t.status);
-  const assignee = t.assignee ? t.assignee.firstName + ' ' + (t.assignee.lastName || '') : 'Não atribuído';
-  const contact = t.contact ? t.contact.firstName + ' ' + (t.contact.lastName || '') : '—';
+  const assignee = fullName(t.assignee) !== '—' ? fullName(t.assignee) : 'Não atribuído';
+  const contact = fullName(t.contact);
+  const cg = extractCG(t.subject);
   const dept = t.department ? t.department.name : '—';
 
   document.getElementById('modalTitle').textContent = `#${t.ticketNumber || t.id}`;
@@ -580,6 +640,7 @@ function openModal(t) {
       <span class="detail-key">Departamento</span>
       <span class="detail-val">${escHtml(dept)}</span>
     </div>
+    ${cg ? `<div class="detail-row"><span class="detail-key">Unidade</span><span class="detail-val">${cg}</span></div>` : ''}
     <div class="detail-row">
       <span class="detail-key">Aberto em</span>
       <span class="detail-val">${fmtDate(t.createdTime)}</span>
@@ -645,6 +706,11 @@ document.getElementById('searchInput').addEventListener('input', e => {
   searchQuery = e.target.value;
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => renderTickets(), 250);
+});
+
+document.getElementById('selectCG').addEventListener('change', e => {
+  activeCG = e.target.value;
+  renderTickets();
 });
 
 // ── INIT ──
