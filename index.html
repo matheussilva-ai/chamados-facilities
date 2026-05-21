@@ -564,23 +564,10 @@ async function loadTickets() {
   setRefreshing(true);
 
   try {
-    // Busca todos os tickets sem filtro de status (máximo permitido pelo Zoho)
-    // Filtragem por status é feita no frontend
-    let allFetched = [];
-    const pageSize = 100;
-    
-    // Busca até 3 páginas (300 tickets) para cobrir o histórico recente
-    for (let page = 0; page < 3; page++) {
-      const from = page * pageSize + 1;
-      const res = await fetch(`${BASE}/api/tickets?limit=${pageSize}&from=${from}`);
-      if (!res.ok) break;
-      const data = await res.json();
-      const batch = data.data || [];
-      allFetched = allFetched.concat(batch);
-      if (batch.length < pageSize) break; // não há mais páginas
-    }
-    
-    allTickets = allFetched;
+    const res = await fetch(`${BASE}/api/tickets?limit=100`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    allTickets = data.data || [];
 
     document.getElementById('lastUpdate').innerHTML =
       `<div class="pulse"></div><span>Atualizado ${timeAgo(new Date().toISOString())}</span>`;
