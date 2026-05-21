@@ -551,14 +551,26 @@ async function loadTickets() {
   setRefreshing(true);
 
   try {
-    const params = new URLSearchParams({ limit: 100 });
-    if (activeStatus !== 'all') params.set('status', activeStatus);
+    // Busca os 4 status ativos em paralelo para garantir que todos apareçam
+    const statusList = ['Open', 'Em execução pela GHC', 'Aguardando Fornecedor', 'Aguardando Entrega do Item'];
+    const requests = statusList.map(s =>
+      fetch(`${BASE}/api/tickets?limit=100&status=${encodeURIComponent(s)}`)
+        .then(r => r.json())
+        .then(d => d.data || [])
+        .catch(() => [])
+    );
 
-    const res = await fetch(`${BASE}/api/tickets?${params}`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
+    const results = await Promise.all(requests);
+    // Junta e deduplica por id
+    const seen = new Set();
+    allTickets = results.flat().filter(t => {
+      if (seen.has(t.id)) return false;
+      seen.add(t.id);
+      return true;
+    });
+    // Ordena por data de criação decrescente
+    allTickets.sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime));
 
-    allTickets = data.data || [];
     document.getElementById('lastUpdate').innerHTML =
       `<div class="pulse"></div><span>Atualizado ${timeAgo(new Date().toISOString())}</span>`;
 
