@@ -133,19 +133,6 @@
       color: var(--text3); white-space: nowrap;
     }
 
-    .select-cg {
-      height: 32px; padding: 0 28px 0 10px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
-      cursor: pointer; appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239090a0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 10px center;
-      outline: none; transition: border-color 0.15s;
-    }
-    .select-cg:hover { border-color: var(--border2); color: var(--text); }
-    .select-cg option { background: #1e1e22; color: var(--text); }
     .btn-refresh {
       height: 32px; width: 32px;
       border-radius: var(--radius-sm);
@@ -320,6 +307,68 @@
     }
     .empty-search p { font-size: 13px; }
 
+
+    /* ── TELA SELEÇÃO DE UNIDADE ── */
+    .cg-screen {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 200; gap: 0;
+      animation: fadeIn 0.3s ease;
+    }
+    .cg-screen-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 600; font-size: 16px; letter-spacing: -0.3px;
+      margin-bottom: 8px;
+    }
+    .cg-screen-logo .logo-icon { width: 32px; height: 32px; border-radius: 8px; font-size: 16px; }
+    .cg-screen h2 {
+      font-size: 22px; font-weight: 600; color: var(--text);
+      margin-bottom: 6px; letter-spacing: -0.4px;
+    }
+    .cg-screen p {
+      font-size: 13px; color: var(--text3); margin-bottom: 36px;
+    }
+    .cg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px; width: 100%; max-width: 720px; padding: 0 24px;
+    }
+    .cg-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 10px; padding: 24px 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; cursor: pointer;
+      transition: all 0.15s; color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .cg-btn:hover {
+      border-color: var(--accent); background: var(--accent-dim);
+      transform: translateY(-2px);
+    }
+    .cg-btn-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .cg-btn-name { font-size: 13px; font-weight: 600; }
+
+    /* ── CG BADGE NO HEADER ── */
+    .cg-active-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px 12px 4px 8px;
+      font-size: 12px; font-weight: 500; color: var(--text2);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .cg-active-badge:hover { border-color: var(--border2); color: var(--text); }
+    .cg-active-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0;
+    }
+
     /* scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -337,6 +386,7 @@
       <span class="logo-sub">/ Facilities</span>
     </div>
     <div class="spacer"></div>
+    <div class="cg-active-badge" id="cgActiveBadge" style="display:none" onclick="showCGScreen()"><div class="dot"></div><span id="cgActiveName">—</span></div>
     <div class="last-update" id="lastUpdate">
       <div class="pulse"></div>
       <span>—</span>
@@ -362,20 +412,6 @@
       <button class="btn-filter" data-status="Aguardando Entrega do Item">Ag. Entrega</button>
       <button class="btn-filter" data-status="Escalated">Escalated</button>
       <button class="btn-filter" data-status="Closed">Fechado</button>
-    </div>
-
-    <div class="filter-group">
-      <span class="filter-label">Unidade</span>
-      <select class="select-cg" id="selectCG">
-        <option value="all">Todas</option>
-        <option value="Morumbi">Morumbi</option>
-        <option value="Tatuapé">Tatuapé</option>
-        <option value="Pinheiros">Pinheiros</option>
-        <option value="Paraíso">Paraíso</option>
-        <option value="Alphaville">Alphaville</option>
-        <option value="Anália Franco">Anália Franco</option>
-        <option value="Santana">Santana</option>
-      </select>
     </div>
 
     <div class="spacer"></div>
@@ -410,6 +446,26 @@
 
 </div>
 
+
+<!-- TELA SELEÇÃO CG -->
+<div class="cg-screen" id="cgScreen">
+  <div class="cg-screen-logo">
+    <div class="logo-icon" style="width:32px;height:32px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px;">🎫</div>
+    <span>Portal de Chamados</span>
+  </div>
+  <h2>Selecione sua unidade</h2>
+  <p>Os chamados em aberto da unidade serão exibidos</p>
+  <div class="cg-grid">
+    <button class="cg-btn" data-cg="Morumbi"><div class="cg-btn-icon">🏢</div><span class="cg-btn-name">Morumbi</span></button>
+    <button class="cg-btn" data-cg="Tatuapé"><div class="cg-btn-icon">🏢</div><span class="cg-btn-name">Tatuapé</span></button>
+    <button class="cg-btn" data-cg="Pinheiros"><div class="cg-btn-icon">🏢</div><span class="cg-btn-name">Pinheiros</span></button>
+    <button class="cg-btn" data-cg="Paraíso"><div class="cg-btn-icon">🏢</div><span class="cg-btn-name">Paraíso</span></button>
+    <button class="cg-btn" data-cg="Alphaville"><div class="cg-btn-icon">🏢</div><span class="cg-btn-name">Alphaville</span></button>
+    <button class="cg-btn" data-cg="Anália Franco"><div class="cg-btn-icon">🏢</div><span class="cg-btn-name">Anália Franco</span></button>
+    <button class="cg-btn" data-cg="Santana"><div class="cg-btn-icon">🏢</div><span class="cg-btn-name">Santana</span></button>
+  </div>
+</div>
+
 <!-- MODAL -->
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal" id="modal">
@@ -430,8 +486,10 @@ const BASE = '';  // mesmo domínio no Vercel
 
 let allTickets = [];
 let activeStatus = 'all';
-let activeCG = 'all';
+let activeCG = null; // null = nenhuma CG selecionada ainda
 let searchQuery = '';
+
+const STATUS_ABERTOS = ['Open', 'Em execução pela GHC', 'Aguardando Fornecedor', 'Aguardando Entrega do Item'];
 
 // ── NOME SEM NULL ──
 function fullName(obj) {
@@ -517,8 +575,15 @@ function renderTickets() {
   const q = searchQuery.toLowerCase().trim();
 
   let filtered = allTickets;
-  if (activeCG !== 'all') {
+  // Sempre filtra pela CG selecionada
+  if (activeCG) {
     filtered = filtered.filter(t => extractCG(t.subject) === activeCG);
+  }
+  // Filtro de status
+  if (activeStatus === 'all') {
+    filtered = filtered.filter(t => STATUS_ABERTOS.includes(t.status));
+  } else {
+    filtered = filtered.filter(t => t.status === activeStatus);
   }
   if (q) {
     filtered = filtered.filter(t =>
@@ -691,6 +756,32 @@ function stripHtml(s) {
   return String(s).replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
 }
 
+// ── TELA DE SELEÇÃO DE CG ──
+function showCGScreen() {
+  const screen = document.getElementById('cgScreen');
+  screen.style.display = 'flex';
+  requestAnimationFrame(() => screen.style.opacity = '1');
+}
+
+function hideCGScreen() {
+  const screen = document.getElementById('cgScreen');
+  screen.style.opacity = '0';
+  setTimeout(() => { screen.style.display = 'none'; }, 200);
+}
+
+function selectCG(cg) {
+  activeCG = cg;
+  activeStatus = 'all';
+  // Reset botões de status
+  document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+  document.querySelector('.btn-filter[data-status="all"]').classList.add('active');
+  // Atualizar badge no header
+  document.getElementById('cgActiveName').textContent = cg;
+  document.getElementById('cgActiveBadge').style.display = 'flex';
+  hideCGScreen();
+  loadTickets();
+}
+
 // ── EVENTS ──
 document.getElementById('btnRefresh').addEventListener('click', loadTickets);
 document.getElementById('modalClose').addEventListener('click', closeModal);
@@ -719,8 +810,13 @@ document.getElementById('selectCG').addEventListener('change', e => {
   renderTickets();
 });
 
+document.querySelectorAll('.cg-btn').forEach(btn => {
+  btn.addEventListener('click', () => selectCG(btn.dataset.cg));
+});
+
 // ── INIT ──
-loadTickets();
+// Não carrega nada — aguarda seleção de CG
+document.getElementById('stateLoading').style.display = 'none';
 </script>
 </body>
 </html>
