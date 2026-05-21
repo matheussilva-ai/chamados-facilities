@@ -32,7 +32,7 @@ async function getAccessToken() {
   return cachedToken;
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -46,7 +46,6 @@ export default async function handler(req, res) {
     const params = new URLSearchParams({
       limit,
       from,
-      departmentId: "all",
       include: "contacts,assignee,departments",
       sortBy: "createdTime",
     });
@@ -65,6 +64,7 @@ export default async function handler(req, res) {
     );
 
     const data = await zohoRes.json();
+    console.log("ZOHO RESPONSE STATUS:", zohoRes.status);
 
     if (!zohoRes.ok) {
       return res.status(zohoRes.status).json({ error: data });
@@ -72,6 +72,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json(data);
   } catch (err) {
+    console.log("HANDLER ERROR:", err.message);
     return res.status(500).json({ error: err.message });
   }
-}
+};
