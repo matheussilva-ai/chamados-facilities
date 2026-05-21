@@ -7,9 +7,7 @@ let cachedToken = null;
 let tokenExpiry = 0;
 
 async function getAccessToken() {
-  if (cachedToken && Date.now() < tokenExpiry) {
-    return cachedToken;
-  }
+  if (cachedToken && Date.now() < tokenExpiry) return cachedToken;
 
   const params = new URLSearchParams({
     refresh_token: ZOHO_REFRESH_TOKEN,
@@ -40,17 +38,16 @@ module.exports = async function handler(req, res) {
 
   try {
     const token = await getAccessToken();
-    const { status, search, limit = 50, from = 1 } = req.query;
+    const { limit = 100, from = 1 } = req.query;
 
+    // Busca sem filtro de status — filtragem feita no frontend
     const params = new URLSearchParams({
-      limit,
-      from,
+      limit: String(limit),
+      from: String(from),
       include: "contacts,assignee,departments,accounts",
       sortBy: "createdTime",
+      sortOrder: "desc",
     });
-
-    if (status && status !== "all") params.set("status", status);
-    if (search) params.set("subject", search);
 
     const zohoRes = await fetch(
       `https://desk.zoho.com/api/v1/tickets?${params.toString()}`,
