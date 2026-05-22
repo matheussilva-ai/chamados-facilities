@@ -5,372 +5,261 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portal de Chamados — Facilities</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0f0f11;
-      --surface: #17171a;
-      --surface2: #1e1e22;
-      --border: #2a2a30;
-      --border2: #35353d;
-      --text: #e8e8ed;
-      --text2: #9090a0;
-      --text3: #55556a;
-      --accent: #4f8ef7;
-      --accent-dim: rgba(79,142,247,0.12);
-      --green: #34c97e;
-      --green-dim: rgba(52,201,126,0.12);
-      --yellow: #f5a623;
-      --yellow-dim: rgba(245,166,35,0.12);
-      --red: #f05c5c;
-      --red-dim: rgba(240,92,92,0.12);
-      --purple: #a78bfa;
-      --purple-dim: rgba(167,139,250,0.12);
-      --radius: 10px;
-      --radius-sm: 6px;
+      --bg: #0a0a0b;
+      --surface: #111113;
+      --surface2: #18181b;
+      --surface3: #1f1f23;
+      --border: #27272a;
+      --border2: #3f3f46;
+      --text: #fafafa;
+      --text2: #a1a1aa;
+      --text3: #52525b;
+      --accent: #6366f1;
+      --accent-dim: rgba(99,102,241,0.1);
+      --accent-border: rgba(99,102,241,0.3);
+      --green: #22c55e;
+      --green-dim: rgba(34,197,94,0.1);
+      --yellow: #eab308;
+      --yellow-dim: rgba(234,179,8,0.1);
+      --red: #ef4444;
+      --red-dim: rgba(239,68,68,0.1);
+      --purple: #a855f7;
+      --purple-dim: rgba(168,85,247,0.1);
+      --orange: #f97316;
+      --orange-dim: rgba(249,115,22,0.1);
+      --radius: 8px;
+      --radius-sm: 5px;
     }
 
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Geist', sans-serif; font-size: 13px; line-height: 1.5; }
 
-    /* ── LAYOUT ── */
     .app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-    /* ── HEADER ── */
+    /* HEADER */
     header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 0 24px;
-      height: 56px;
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 20px; height: 52px;
       border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      flex-shrink: 0;
+      background: var(--surface); flex-shrink: 0;
     }
-    .logo {
-      display: flex; align-items: center; gap: 10px;
-      font-weight: 600; font-size: 15px; letter-spacing: -0.3px;
-    }
-    .logo-icon {
-      width: 28px; height: 28px; border-radius: 7px;
-      background: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
-    }
-    .logo-sub { color: var(--text2); font-weight: 400; font-size: 13px; }
+    .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; letter-spacing: -0.3px; }
+    .logo-icon { width: 26px; height: 26px; border-radius: 6px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+    .logo-sep { color: var(--text3); }
     header .spacer { flex: 1; }
-    .last-update {
-      color: var(--text3); font-size: 12px; font-family: 'DM Mono', monospace;
+    .cg-badge-header {
       display: flex; align-items: center; gap: 6px;
-    }
-    .pulse {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--green);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    /* ── TOOLBAR ── */
-    .toolbar {
-      display: flex; align-items: center; gap: 10px;
-      padding: 12px 24px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      flex-shrink: 0;
-      flex-wrap: wrap;
-    }
-
-    .search-wrap {
-      position: relative; flex: 1; min-width: 200px; max-width: 380px;
-    }
-    .search-wrap svg {
-      position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
-      color: var(--text3); pointer-events: none;
-    }
-    .search-input {
-      width: 100%; height: 36px;
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px;
-      padding: 0 12px 0 34px;
-      outline: none; transition: border-color 0.15s;
+      border-radius: 20px; padding: 3px 10px 3px 7px;
+      font-size: 12px; font-weight: 500; color: var(--text2);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .cg-badge-header:hover { border-color: var(--border2); color: var(--text); }
+    .cg-badge-header .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: pulse 2s infinite; }
+    .last-sync { color: var(--text3); font-size: 11px; font-family: 'Geist Mono', monospace; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* TOOLBAR */
+    .toolbar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-bottom: 1px solid var(--border);
+      background: var(--surface); flex-shrink: 0; flex-wrap: wrap;
+    }
+    .search-wrap { position: relative; flex: 1; min-width: 180px; max-width: 320px; }
+    .search-wrap svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text3); pointer-events: none; }
+    .search-input {
+      width: 100%; height: 32px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text); font-family: 'Geist', sans-serif; font-size: 12px;
+      padding: 0 10px 0 30px; outline: none; transition: border-color 0.15s;
     }
     .search-input::placeholder { color: var(--text3); }
-    .search-input:focus { border-color: var(--accent); }
-
-    .filter-group { display: flex; gap: 6px; align-items: center; }
-    .filter-label { color: var(--text3); font-size: 12px; font-weight: 500; white-space: nowrap; }
-
+    .search-input:focus { border-color: var(--accent-border); }
+    .filter-group { display: flex; gap: 4px; align-items: center; }
+    .filter-sep { width: 1px; height: 20px; background: var(--border); margin: 0 2px; }
     .btn-filter {
-      height: 32px; padding: 0 12px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+      height: 28px; padding: 0 10px; border-radius: 20px;
+      border: 1px solid transparent; background: transparent;
+      color: var(--text3); font-family: 'Geist', sans-serif; font-size: 11px; font-weight: 500;
       cursor: pointer; transition: all 0.15s; white-space: nowrap;
     }
-    .btn-filter:hover { border-color: var(--border2); color: var(--text); }
-    .btn-filter.active {
-      border-color: var(--accent);
-      background: var(--accent-dim);
-      color: var(--accent);
-    }
-
+    .btn-filter:hover { color: var(--text2); background: var(--surface2); }
+    .btn-filter.active { border-color: var(--accent-border); background: var(--accent-dim); color: var(--accent); }
     .toolbar .spacer { flex: 1; }
-    .count-badge {
-      font-family: 'DM Mono', monospace; font-size: 11px;
-      color: var(--text3); white-space: nowrap;
-    }
-
+    .count-badge { font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--text3); }
     .btn-refresh {
-      height: 32px; width: 32px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text2);
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
+      height: 28px; width: 28px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: transparent; color: var(--text3);
+      cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;
     }
-    .btn-refresh:hover { border-color: var(--border2); color: var(--text); }
-    .btn-refresh.spinning svg { animation: spin 0.8s linear infinite; }
+    .btn-refresh:hover { border-color: var(--border2); color: var(--text2); }
+    .btn-refresh.spinning svg { animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── MAIN ── */
-    .main { flex: 1; overflow-y: auto; padding: 20px 24px; }
+    /* MAIN */
+    .main { flex: 1; overflow-y: auto; }
 
-    /* ── STATES ── */
+    /* TICKET LIST */
+    .ticket-list { width: 100%; border-collapse: collapse; }
+    .ticket-list thead tr {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .ticket-list thead th {
+      padding: 8px 16px; text-align: left;
+      font-size: 11px; font-weight: 500; color: var(--text3);
+      font-family: 'Geist Mono', monospace; letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .ticket-list tbody tr {
+      border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: background 0.1s;
+      animation: rowIn 0.15s ease both;
+    }
+    .ticket-list tbody tr:hover { background: var(--surface2); }
+    @keyframes rowIn { from { opacity:0; transform: translateX(-4px); } to { opacity:1; transform: translateX(0); } }
+    .ticket-list td { padding: 10px 16px; vertical-align: middle; }
+
+    .td-num { font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--text3); white-space: nowrap; }
+    .td-status { white-space: nowrap; }
+    .td-subject { color: var(--text); font-size: 13px; font-weight: 500; max-width: 380px; }
+    .td-subject span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 380px; }
+    .td-contact { color: var(--text2); font-size: 12px; white-space: nowrap; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+    .td-date { font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--text3); white-space: nowrap; }
+    .td-ago { font-size: 11px; color: var(--text3); white-space: nowrap; }
+
+    /* STATUS PILL */
+    .pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 7px; border-radius: 20px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.2px;
+    }
+    .pill::before { content:''; width:4px; height:4px; border-radius:50%; background:currentColor; }
+    .p-open       { color: var(--accent);  background: var(--accent-dim); }
+    .p-onhold     { color: var(--purple);  background: var(--purple-dim); }
+    .p-escalated  { color: var(--red);     background: var(--red-dim); }
+    .p-closed     { color: var(--text3);   background: var(--surface3); }
+    .p-aguardando { color: var(--yellow);  background: var(--yellow-dim); }
+    .p-ghc        { color: var(--green);   background: var(--green-dim); }
+    .p-other      { color: var(--text2);   background: var(--surface3); }
+
+    /* STATES */
     .state-center {
       display: flex; flex-direction: column; align-items: center;
-      justify-content: center; height: 300px; gap: 12px;
-      color: var(--text3); font-size: 13px; text-align: center;
+      justify-content: center; height: 280px; gap: 10px;
+      color: var(--text3); font-size: 12px; text-align: center;
     }
-    .state-center svg { opacity: 0.3; }
-    .state-center p { max-width: 260px; line-height: 1.6; }
+    .state-center svg { opacity: 0.25; }
 
-    /* ── GRID ── */
-    .tickets-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 12px;
+    /* CG SELECTION SCREEN */
+    .cg-screen {
+      position: fixed; inset: 0; background: var(--bg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 200; transition: opacity 0.2s;
     }
+    .cg-screen-logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+    .cg-screen h2 { font-size: 20px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.4px; }
+    .cg-screen p { font-size: 12px; color: var(--text3); margin-bottom: 32px; }
+    .cg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; width: 100%; max-width: 680px; padding: 0 20px; }
+    .cg-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; padding: 20px 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; cursor: pointer; transition: all 0.15s; color: var(--text);
+      font-family: 'Geist', sans-serif;
+    }
+    .cg-btn:hover { border-color: var(--accent-border); background: var(--accent-dim); transform: translateY(-1px); }
+    .cg-btn-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .cg-btn-name { font-size: 12px; font-weight: 600; }
 
-    /* ── TICKET CARD ── */
-    .ticket-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      cursor: pointer;
-      transition: border-color 0.15s, transform 0.1s;
-      animation: fadeIn 0.2s ease both;
-    }
-    .ticket-card:hover {
-      border-color: var(--border2);
-      transform: translateY(-1px);
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .card-top {
-      display: flex; align-items: flex-start;
-      justify-content: space-between; gap: 10px; margin-bottom: 10px;
-    }
-    .ticket-number {
-      font-family: 'DM Mono', monospace; font-size: 11px;
-      color: var(--text3); flex-shrink: 0;
-    }
-    .status-pill {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 2px 8px; border-radius: 20px;
-      font-size: 11px; font-weight: 500; flex-shrink: 0;
-    }
-    .status-pill::before {
-      content: ''; width: 5px; height: 5px;
-      border-radius: 50%; background: currentColor;
-    }
-
-    .cg-badge {
-      display: inline-flex; align-items: center;
-      padding: 2px 7px; border-radius: 20px;
-      font-size: 11px; font-weight: 500;
-      color: var(--text2); background: var(--surface2);
-      border: 1px solid var(--border); flex-shrink: 0;
-    }
-    .status-open       { color: var(--accent);  background: var(--accent-dim); }
-    .status-onhold     { color: var(--purple);  background: var(--purple-dim); }
-    .status-escalated  { color: var(--red);     background: var(--red-dim); }
-    .status-closed     { color: var(--text3);   background: var(--surface2); }
-    .status-aguardando { color: var(--yellow);  background: var(--yellow-dim); }
-    .status-ghc        { color: var(--green);   background: var(--green-dim); }
-    .status-other      { color: var(--text2);   background: var(--surface2); }
-
-    .ticket-subject {
-      font-size: 13px; font-weight: 500; color: var(--text);
-      line-height: 1.4; margin-bottom: 10px;
-      display: -webkit-box; -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical; overflow: hidden;
-    }
-
-    .card-meta {
-      display: flex; flex-wrap: wrap; gap: 8px 16px;
-    }
-    .meta-item {
-      display: flex; align-items: center; gap: 5px;
-      color: var(--text3); font-size: 11px;
-    }
-    .meta-item svg { flex-shrink: 0; }
-    .meta-value { color: var(--text2); }
-
-    .card-divider {
-      border: none; border-top: 1px solid var(--border);
-      margin: 12px 0;
-    }
-    .last-reply {
-      font-size: 12px; color: var(--text3); line-height: 1.5;
-      display: -webkit-box; -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .last-reply strong { color: var(--text2); font-weight: 500; }
-
-    /* ── MODAL ── */
+    /* MODAL */
     .modal-backdrop {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
       z-index: 100; display: flex; align-items: center; justify-content: center;
       padding: 20px; opacity: 0; transition: opacity 0.2s;
     }
     .modal-backdrop.open { opacity: 1; }
     .modal {
       background: var(--surface); border: 1px solid var(--border2);
-      border-radius: 14px; width: 100%; max-width: 600px; max-height: 80vh;
-      overflow-y: auto;
-      transform: translateY(12px); transition: transform 0.2s;
+      border-radius: 12px; width: 100%; max-width: 640px; max-height: 85vh;
+      overflow: hidden; display: flex; flex-direction: column;
+      transform: translateY(10px) scale(0.99); transition: transform 0.2s;
     }
-    .modal-backdrop.open .modal { transform: translateY(0); }
+    .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+
     .modal-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 20px 16px; border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; background: var(--surface); z-index: 1;
+      display: flex; align-items: center; gap: 10px;
+      padding: 16px 18px; border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
     }
-    .modal-header h2 { font-size: 15px; font-weight: 600; }
+    .modal-header .ticket-num { font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--text3); }
+    .modal-header h2 { font-size: 14px; font-weight: 600; flex: 1; line-height: 1.3; }
     .modal-close {
-      width: 28px; height: 28px; border-radius: 6px;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--text2); cursor: pointer; display: flex; align-items: center;
-      justify-content: center; transition: all 0.15s;
+      width: 26px; height: 26px; border-radius: 5px; border: 1px solid var(--border);
+      background: transparent; color: var(--text3); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0;
     }
     .modal-close:hover { background: var(--surface2); color: var(--text); }
-    .modal-body { padding: 20px; }
-    .detail-row {
-      display: flex; gap: 8px; margin-bottom: 12px;
-      font-size: 13px;
+
+    .modal-meta {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      padding: 10px 18px; border-bottom: 1px solid var(--border);
+      background: var(--surface2); flex-shrink: 0;
     }
-    .detail-key { color: var(--text3); min-width: 120px; flex-shrink: 0; }
-    .detail-val { color: var(--text); }
-    .detail-section-title {
-      font-size: 11px; font-weight: 600; color: var(--text3);
-      text-transform: uppercase; letter-spacing: 0.8px;
-      margin: 20px 0 10px;
+    .meta-chip { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); }
+    .meta-chip strong { color: var(--text2); font-weight: 500; }
+
+    .modal-body { overflow-y: auto; flex: 1; }
+
+    /* THREADS */
+    .threads-section { padding: 16px 18px; }
+    .threads-title { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+    .thread-loading { color: var(--text3); font-size: 12px; padding: 16px 0; text-align: center; }
+
+    .thread-item { margin-bottom: 12px; }
+    .thread-item:last-child { margin-bottom: 0; }
+    .thread-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
     }
-    .detail-description {
-      font-size: 13px; color: var(--text2); line-height: 1.6;
-      background: var(--surface2); border-radius: var(--radius-sm);
-      padding: 12px; border: 1px solid var(--border);
+    .thread-avatar {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; flex-shrink: 0;
+    }
+    .thread-avatar.agent { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+    .thread-avatar.customer { background: var(--surface3); color: var(--text2); border: 1px solid var(--border); }
+    .thread-author { font-size: 12px; font-weight: 500; color: var(--text); }
+    .thread-time { font-size: 11px; color: var(--text3); font-family: 'Geist Mono', monospace; }
+    .thread-badge { font-size: 9px; font-weight: 600; padding: 1px 5px; border-radius: 3px; }
+    .thread-badge.agent { background: var(--accent-dim); color: var(--accent); }
+    .thread-badge.customer { background: var(--surface3); color: var(--text3); }
+    .thread-content {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 12px;
+      font-size: 12px; color: var(--text2); line-height: 1.6;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .thread-content.agent { border-color: var(--accent-border); }
+
+    .modal-footer {
+      padding: 12px 18px; border-top: 1px solid var(--border);
+      flex-shrink: 0;
     }
     .modal-link {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 16px; padding: 8px 14px;
-      border-radius: var(--radius-sm); border: 1px solid var(--border);
-      background: var(--surface2); color: var(--accent);
-      font-size: 12px; font-weight: 500; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 12px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: var(--surface2);
+      color: var(--accent); font-size: 11px; font-weight: 500; text-decoration: none;
       transition: all 0.15s;
     }
-    .modal-link:hover { border-color: var(--accent); background: var(--accent-dim); }
+    .modal-link:hover { border-color: var(--accent-border); background: var(--accent-dim); }
 
-    /* ── EMPTY SEARCH ── */
-    .empty-search {
-      display: flex; flex-direction: column; align-items: center;
-      padding: 48px 24px; gap: 10px; color: var(--text3);
-    }
-    .empty-search p { font-size: 13px; }
-
-
-    /* ── TELA SELEÇÃO DE UNIDADE ── */
-    .cg-screen {
-      position: fixed; inset: 0;
-      background: var(--bg);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      z-index: 200; gap: 0;
-      animation: fadeIn 0.3s ease;
-    }
-    .cg-screen-logo {
-      display: flex; align-items: center; gap: 10px;
-      font-weight: 600; font-size: 16px; letter-spacing: -0.3px;
-      margin-bottom: 8px;
-    }
-    .cg-screen-logo .logo-icon { width: 32px; height: 32px; border-radius: 8px; font-size: 16px; }
-    .cg-screen h2 {
-      font-size: 22px; font-weight: 600; color: var(--text);
-      margin-bottom: 6px; letter-spacing: -0.4px;
-    }
-    .cg-screen p {
-      font-size: 13px; color: var(--text3); margin-bottom: 36px;
-    }
-    .cg-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px; width: 100%; max-width: 720px; padding: 0 24px;
-    }
-    .cg-btn {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 10px; padding: 24px 16px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; cursor: pointer;
-      transition: all 0.15s; color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-    }
-    .cg-btn:hover {
-      border-color: var(--accent); background: var(--accent-dim);
-      transform: translateY(-2px);
-    }
-    .cg-btn-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: var(--surface2); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-    }
-    .cg-btn-name { font-size: 13px; font-weight: 600; }
-
-    /* ── CG BADGE NO HEADER ── */
-    .cg-active-badge {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 20px; padding: 4px 12px 4px 8px;
-      font-size: 12px; font-weight: 500; color: var(--text2);
-      cursor: pointer; transition: all 0.15s;
-    }
-    .cg-active-badge:hover { border-color: var(--border2); color: var(--text); }
-    .cg-active-badge .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--accent); flex-shrink: 0;
-    }
-
-    /* scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
   </style>
@@ -378,32 +267,28 @@
 <body>
 <div class="app">
 
-  <!-- HEADER -->
   <header>
     <div class="logo">
       <div class="logo-icon">🎫</div>
       <span>Portal de Chamados</span>
-      <span class="logo-sub">/ Facilities</span>
+      <span class="logo-sep">/</span>
+      <span style="color:var(--text2);font-weight:400">Facilities</span>
     </div>
     <div class="spacer"></div>
-    <div class="cg-active-badge" id="cgActiveBadge" style="display:none" onclick="showCGScreen()"><div class="dot"></div><span id="cgActiveName">—</span></div>
-    <div class="last-update" id="lastUpdate">
-      <div class="pulse"></div>
-      <span>—</span>
+    <div class="cg-badge-header" id="cgActiveBadge" style="display:none" onclick="showCGScreen()">
+      <div class="dot"></div>
+      <span id="cgActiveName">—</span>
     </div>
+    <span class="last-sync" id="lastUpdate">—</span>
   </header>
 
-  <!-- TOOLBAR -->
   <div class="toolbar">
     <div class="search-wrap">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
-      <input class="search-input" id="searchInput" type="text" placeholder="Buscar por assunto..." />
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="searchInput" type="text" placeholder="Buscar chamado..." />
     </div>
-
+    <div class="filter-sep"></div>
     <div class="filter-group">
-      <span class="filter-label">Status</span>
       <button class="btn-filter active" data-status="all">Todos</button>
       <button class="btn-filter" data-status="Open">Aberto</button>
       <button class="btn-filter" data-status="Em execução pela GHC">GHC</button>
@@ -413,11 +298,10 @@
       <button class="btn-filter" data-status="Escalated">Escalated</button>
       <button class="btn-filter" data-status="Closed">Fechado</button>
     </div>
-
     <div class="spacer"></div>
     <span class="count-badge" id="countBadge">—</span>
     <button class="btn-refresh" id="btnRefresh" title="Atualizar">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
         <path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
         <path d="M8 16H3v5"/>
@@ -425,36 +309,43 @@
     </button>
   </div>
 
-  <!-- MAIN -->
   <div class="main" id="main">
-    <div class="state-center" id="stateLoading">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <div class="state-center" id="stateLoading" style="display:none">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
       </svg>
       <p>Carregando chamados...</p>
     </div>
     <div class="state-center" id="stateError" style="display:none">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
-      </svg>
-      <p id="stateErrorMsg">Erro ao carregar chamados.</p>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      <p id="stateErrorMsg">Erro ao carregar.</p>
     </div>
     <div id="ticketsContainer" style="display:none">
-      <div class="tickets-grid" id="ticketsGrid"></div>
+      <table class="ticket-list">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>STATUS</th>
+            <th>ASSUNTO</th>
+            <th>SOLICITANTE</th>
+            <th>ABERTO EM</th>
+            <th>ATUALIZADO</th>
+          </tr>
+        </thead>
+        <tbody id="ticketsTbody"></tbody>
+      </table>
     </div>
   </div>
-
 </div>
 
-
-<!-- TELA SELEÇÃO CG -->
+<!-- CG SCREEN -->
 <div class="cg-screen" id="cgScreen">
   <div class="cg-screen-logo">
-    <div class="logo-icon" style="width:32px;height:32px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px;">🎫</div>
+    <div class="logo-icon" style="width:28px;height:28px;border-radius:7px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;">🎫</div>
     <span>Portal de Chamados</span>
   </div>
   <h2>Selecione sua unidade</h2>
-  <p>Os chamados em aberto da unidade serão exibidos</p>
+  <p>Chamados ativos da unidade serão exibidos</p>
   <div class="cg-grid">
     <button class="cg-btn" data-cg="Morumbi"><div class="cg-btn-icon">🏢</div><span class="cg-btn-name">Morumbi</span></button>
     <button class="cg-btn" data-cg="Tatuapé"><div class="cg-btn-icon">🏢</div><span class="cg-btn-name">Tatuapé</span></button>
@@ -468,53 +359,62 @@
 
 <!-- MODAL -->
 <div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal" id="modal">
+  <div class="modal">
     <div class="modal-header">
-      <h2 id="modalTitle">Detalhes do Chamado</h2>
+      <span class="ticket-num" id="modalNum">#—</span>
+      <h2 id="modalTitle">—</h2>
       <button class="modal-close" id="modalClose">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 6 6 18M6 6l12 12"/>
-        </svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
-    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-meta" id="modalMeta"></div>
+    <div class="modal-body">
+      <div class="threads-section">
+        <div class="threads-title">Histórico de conversas</div>
+        <div id="threadsContent"><div class="thread-loading">Carregando...</div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-link" id="modalZohoLink" href="#" target="_blank">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Abrir no Zoho Desk
+      </a>
+    </div>
   </div>
 </div>
 
 <script>
-const BASE = '';  // mesmo domínio no Vercel
-
+const BASE = '';
 let allTickets = [];
 let activeStatus = 'all';
-let activeCG = null; // null = nenhuma CG selecionada ainda
+let activeCG = null;
 let searchQuery = '';
 
 const STATUS_ABERTOS = ['Open', 'Em execução pela GHC', 'Aguardando Fornecedor', 'Aguardando Entrega do Item'];
 
-// ── NOME SEM NULL ──
-function fullName(obj) {
-  if (!obj) return '—';
-  const parts = [obj.firstName, obj.lastName].filter(p => p && p !== 'null');
-  return parts.join(' ').trim() || '—';
-}
+const STATUS_MAP = {
+  'Open':                       { label: 'Aberto',        cls: 'p-open' },
+  'On Hold':                    { label: 'On Hold',       cls: 'p-onhold' },
+  'Escalated':                  { label: 'Escalated',     cls: 'p-escalated' },
+  'Closed':                     { label: 'Fechado',       cls: 'p-closed' },
+  'Aguardando Entrega do Item':  { label: 'Ag. Entrega',  cls: 'p-aguardando' },
+  'Aguardando Fornecedor':       { label: 'Ag. Fornecedor', cls: 'p-aguardando' },
+  'Em execução pela GHC':        { label: 'Em execução GHC', cls: 'p-ghc' },
+};
 
-// ── EXTRAIR CG DO ASSUNTO ──
 const CG_LIST = ['Morumbi', 'Tatuapé', 'Pinheiros', 'Paraíso', 'Alphaville', 'Anália Franco', 'Santana'];
 
-// Normaliza string removendo acentos para comparação
 function normalize(s) {
   return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function extractCG(subject, account, cf) {
-  // 1. Tenta pelo campo cf_unidade (campo customizado do Zoho)
   if (cf && cf.cf_unidade) {
     const v = normalize(cf.cf_unidade);
     for (const cg of CG_LIST) {
       if (v.includes(normalize(cg))) return cg;
     }
   }
-  // 2. Tenta pelo assunto
   if (!subject) return null;
   const s = normalize(subject);
   for (const cg of CG_LIST) {
@@ -523,88 +423,72 @@ function extractCG(subject, account, cf) {
   return null;
 }
 
-// ── STATUS MAP ──
-const STATUS_MAP = {
-  'Open':                    { label: 'Aberto',                  cls: 'status-open' },
-  'On Hold':                 { label: 'On Hold',                 cls: 'status-onhold' },
-  'Escalated':               { label: 'Escalated',               cls: 'status-escalated' },
-  'Closed':                  { label: 'Fechado',                 cls: 'status-closed' },
-  'Aguardando Entrega do Item': { label: 'Ag. Entrega',          cls: 'status-aguardando' },
-  'Aguardando Fornecedor':   { label: 'Ag. Fornecedor',          cls: 'status-aguardando' },
-  'Em execução pela GHC':    { label: 'Em execução GHC',         cls: 'status-ghc' },
-};
+function statusInfo(s) { return STATUS_MAP[s] || { label: s || '—', cls: 'p-other' }; }
 
-function statusInfo(s) {
-  return STATUS_MAP[s] || { label: s || '—', cls: 'status-other' };
+function fullName(obj) {
+  if (!obj) return '—';
+  const parts = [obj.firstName, obj.lastName].filter(p => p && p !== 'null');
+  return parts.join(' ').trim() || '—';
 }
 
-// ── DATE FORMAT ──
 function fmtDate(iso) {
   if (!iso) return '—';
   const d = new Date(iso);
-  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' })
-    + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
 }
 
 function timeAgo(iso) {
   if (!iso) return '—';
   const diff = Date.now() - new Date(iso).getTime();
   const m = Math.floor(diff / 60000);
-  if (m < 1)  return 'agora';
-  if (m < 60) return `${m}min atrás`;
+  if (m < 1) return 'agora';
+  if (m < 60) return `${m}min`;
   const h = Math.floor(m / 60);
-  if (h < 24) return `${h}h atrás`;
-  const days = Math.floor(h / 24);
-  return `${days}d atrás`;
+  if (h < 24) return `${h}h`;
+  return `${Math.floor(h/24)}d`;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function stripHtml(s) {
+  return String(s).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
 }
 
 // ── FETCH ──
 async function loadTickets() {
   showLoading();
   setRefreshing(true);
-
   try {
-    // Busca 3 páginas de 100 tickets (300 total) para cobrir histórico
     let rawTickets = [];
     for (let page = 0; page < 3; page++) {
       const from = page * 100 + 1;
       const res = await fetch(`${BASE}/api/tickets?from=${from}`);
-      if (!res.ok) break;
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       const batch = data.data || [];
       rawTickets = rawTickets.concat(batch);
-      if (batch.length < 100) break; // última página
+      if (batch.length < 100) break;
     }
 
-    // Enriquecer tickets sem CG identificada buscando individualmente
-    // Limita a 5 por vez com delay para não sobrecarregar o Zoho
+    // Enriquecer tickets sem CG (batches de 5)
     const needsEnrich = rawTickets.filter(t => !extractCG(t.subject, t.account, t.cf));
     if (needsEnrich.length > 0) {
       const BATCH = 5;
       for (let i = 0; i < needsEnrich.length; i += BATCH) {
         const batch = needsEnrich.slice(i, i + BATCH);
         const results = await Promise.all(
-          batch.map(t =>
-            fetch(`${BASE}/api/ticket-detail?id=${t.id}`)
-              .then(r => r.ok ? r.json() : null)
-              .catch(() => null)
-          )
+          batch.map(t => fetch(`${BASE}/api/ticket-detail?id=${t.id}`).then(r => r.ok ? r.json() : null).catch(() => null))
         );
-        results.forEach((full, j) => {
-          if (full && full.cf) batch[j].cf = full.cf;
-        });
-        if (i + BATCH < needsEnrich.length) {
-          await new Promise(r => setTimeout(r, 300)); // 300ms entre batches
-        }
+        results.forEach((full, j) => { if (full && full.cf) batch[j].cf = full.cf; });
+        if (i + BATCH < needsEnrich.length) await new Promise(r => setTimeout(r, 300));
       }
     }
     allTickets = rawTickets;
 
-    document.getElementById('lastUpdate').innerHTML =
-      `<div class="pulse"></div><span>Atualizado ${timeAgo(new Date().toISOString())}</span>`;
-
+    document.getElementById('lastUpdate').textContent = `atualizado ${timeAgo(new Date().toISOString())} atrás`;
     renderTickets();
-  } catch (e) {
+  } catch(e) {
     showError(e.message);
   } finally {
     setRefreshing(false);
@@ -614,173 +498,135 @@ async function loadTickets() {
 // ── RENDER ──
 function renderTickets() {
   const q = searchQuery.toLowerCase().trim();
-
   let filtered = allTickets;
-  // Sempre filtra pela CG selecionada
-  if (activeCG) {
-    filtered = filtered.filter(t => extractCG(t.subject, t.account, t.cf) === activeCG);
-  }
-  // Filtro de status
+
+  if (activeCG) filtered = filtered.filter(t => extractCG(t.subject, t.account, t.cf) === activeCG);
+
   if (activeStatus === 'all') {
     filtered = filtered.filter(t => STATUS_ABERTOS.includes(t.status));
   } else {
     filtered = filtered.filter(t => t.status === activeStatus);
   }
-  if (q) {
-    filtered = filtered.filter(t =>
-      (t.subject || '').toLowerCase().includes(q) ||
-      (t.ticketNumber || '').toLowerCase().includes(q)
-    );
-  }
 
-  const grid = document.getElementById('ticketsGrid');
+  if (q) filtered = filtered.filter(t =>
+    (t.subject||'').toLowerCase().includes(q) ||
+    (t.ticketNumber||'').toLowerCase().includes(q)
+  );
+
   document.getElementById('stateLoading').style.display = 'none';
   document.getElementById('stateError').style.display = 'none';
 
   if (filtered.length === 0) {
     document.getElementById('ticketsContainer').style.display = 'none';
-    showEmpty(q);
     document.getElementById('countBadge').textContent = '0 chamados';
+    showEmpty(q);
     return;
   }
 
   document.getElementById('ticketsContainer').style.display = 'block';
-  document.getElementById('countBadge').textContent =
-    `${filtered.length} chamado${filtered.length !== 1 ? 's' : ''}`;
+  document.querySelectorAll('.empty-state').forEach(e => e.remove());
+  document.getElementById('countBadge').textContent = `${filtered.length} chamado${filtered.length !== 1 ? 's' : ''}`;
 
-  grid.innerHTML = filtered.map((t, i) => {
+  const tbody = document.getElementById('ticketsTbody');
+  tbody.innerHTML = filtered.map((t, i) => {
     const st = statusInfo(t.status);
-    const assignee = fullName(t.assignee) !== '—' ? fullName(t.assignee) : 'Não atribuído';
     const contact = fullName(t.contact);
-    const cg = extractCG(t.subject, t.account, t.cf);
-
-    return `
-    <div class="ticket-card" data-idx="${i}" style="animation-delay:${Math.min(i * 0.03, 0.3)}s">
-      <div class="card-top">
-        <span class="ticket-number">#${t.ticketNumber || t.id}</span>
-        <span class="status-pill ${st.cls}">${st.label}</span>
-        ${cg ? `<span class="cg-badge">${cg}</span>` : ''}
-      </div>
-      <div class="ticket-subject">${escHtml(t.subject || '(sem assunto)')}</div>
-      <div class="card-meta">
-        <div class="meta-item">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
-          <span class="meta-value">${escHtml(contact.trim() || '—')}</span>
-        </div>
-        <div class="meta-item">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          <span class="meta-value">${fmtDate(t.createdTime)}</span>
-        </div>
-        ${t.assignee ? `<div class="meta-item">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span class="meta-value">${escHtml(assignee.trim())}</span>
-        </div>` : ''}
-        <div class="meta-item">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-          <span>${timeAgo(t.modifiedTime)}</span>
-        </div>
-      </div>
-      ${t.description ? `<hr class="card-divider"><div class="last-reply">${escHtml(stripHtml(t.description).slice(0, 120))}${t.description.length > 120 ? '…' : ''}</div>` : ''}
-    </div>`;
+    return `<tr data-idx="${i}" style="animation-delay:${Math.min(i*0.02,0.3)}s">
+      <td class="td-num">#${t.ticketNumber || t.id}</td>
+      <td class="td-status"><span class="pill ${st.cls}">${st.label}</span></td>
+      <td class="td-subject"><span title="${escHtml(t.subject||'')}">${escHtml(t.subject || '(sem assunto)')}</span></td>
+      <td class="td-contact">${escHtml(contact)}</td>
+      <td class="td-date">${fmtDate(t.createdTime)}</td>
+      <td class="td-ago">${timeAgo(t.modifiedTime)}</td>
+    </tr>`;
   }).join('');
 
-  // click → modal
-  grid.querySelectorAll('.ticket-card').forEach(el => {
-    el.addEventListener('click', () => openModal(filtered[+el.dataset.idx]));
+  tbody.querySelectorAll('tr').forEach(row => {
+    row.addEventListener('click', () => openModal(filtered[+row.dataset.idx]));
   });
 }
 
 function showEmpty(q) {
-  const main = document.getElementById('main');
-  // remove previous empty
-  main.querySelectorAll('.empty-search').forEach(e => e.remove());
+  document.querySelectorAll('.empty-state').forEach(e => e.remove());
   const div = document.createElement('div');
-  div.className = 'empty-search';
-  div.innerHTML = `
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.3">
-      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-    </svg>
-    <p>${q ? `Nenhum chamado encontrado para "<strong>${escHtml(q)}</strong>"` : 'Nenhum chamado encontrado.'}</p>`;
-  main.appendChild(div);
+  div.className = 'state-center empty-state';
+  div.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>${q ? `Nenhum resultado para "<strong>${escHtml(q)}</strong>"` : 'Nenhum chamado encontrado.'}</p>`;
+  document.getElementById('main').appendChild(div);
 }
 
 function showLoading() {
   document.getElementById('stateLoading').style.display = 'flex';
   document.getElementById('stateError').style.display = 'none';
   document.getElementById('ticketsContainer').style.display = 'none';
-  document.querySelectorAll('.empty-search').forEach(e => e.remove());
+  document.querySelectorAll('.empty-state').forEach(e => e.remove());
 }
 
 function showError(msg) {
   document.getElementById('stateLoading').style.display = 'none';
   document.getElementById('stateError').style.display = 'flex';
-  document.getElementById('ticketsContainer').style.display = 'none';
   document.getElementById('stateErrorMsg').textContent = `Erro: ${msg}`;
 }
 
-function setRefreshing(v) {
-  document.getElementById('btnRefresh').classList.toggle('spinning', v);
-}
+function setRefreshing(v) { document.getElementById('btnRefresh').classList.toggle('spinning', v); }
 
-// ── MODAL ──
-function openModal(t) {
+// ── MODAL + THREADS ──
+async function openModal(t) {
   const st = statusInfo(t.status);
-  const assignee = fullName(t.assignee) !== '—' ? fullName(t.assignee) : 'Não atribuído';
   const contact = fullName(t.contact);
+  const assignee = fullName(t.assignee) !== '—' ? fullName(t.assignee) : 'Não atribuído';
   const cg = extractCG(t.subject, t.account, t.cf);
-  const dept = t.department ? t.department.name : '—';
 
-  document.getElementById('modalTitle').textContent = `#${t.ticketNumber || t.id}`;
-  document.getElementById('modalBody').innerHTML = `
-    <div class="detail-row">
-      <span class="detail-key">Status</span>
-      <span class="detail-val"><span class="status-pill ${st.cls}">${st.label}</span></span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-key">Assunto</span>
-      <span class="detail-val">${escHtml(t.subject || '—')}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-key">Solicitante</span>
-      <span class="detail-val">${escHtml(contact.trim())}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-key">Responsável</span>
-      <span class="detail-val">${escHtml(assignee.trim())}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-key">Departamento</span>
-      <span class="detail-val">${escHtml(dept)}</span>
-    </div>
-    ${cg ? `<div class="detail-row"><span class="detail-key">Unidade</span><span class="detail-val">${cg}</span></div>` : ''}
-    <div class="detail-row">
-      <span class="detail-key">Aberto em</span>
-      <span class="detail-val">${fmtDate(t.createdTime)}</span>
-    </div>
-    <div class="detail-row">
-      <span class="detail-key">Atualizado</span>
-      <span class="detail-val">${fmtDate(t.modifiedTime)}</span>
-    </div>
-    ${t.dueDate ? `<div class="detail-row">
-      <span class="detail-key">Prazo</span>
-      <span class="detail-val">${fmtDate(t.dueDate)}</span>
-    </div>` : ''}
-    ${t.description ? `
-      <div class="detail-section-title">Descrição</div>
-      <div class="detail-description">${escHtml(stripHtml(t.description))}</div>
-    ` : ''}
-    <a class="modal-link" href="https://desk.zoho.com/agent/genialcare/facilities/tickets/${t.id}" target="_blank">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-      </svg>
-      Abrir no Zoho Desk
-    </a>
+  document.getElementById('modalNum').textContent = `#${t.ticketNumber || t.id}`;
+  document.getElementById('modalTitle').textContent = t.subject || '(sem assunto)';
+  document.getElementById('modalZohoLink').href = `https://desk.zoho.com/agent/genialcare/facilities/tickets/${t.id}`;
+
+  document.getElementById('modalMeta').innerHTML = `
+    <div class="meta-chip"><span class="pill ${st.cls}">${st.label}</span></div>
+    ${cg ? `<div class="meta-chip">📍 <strong>${cg}</strong></div>` : ''}
+    <div class="meta-chip">👤 <strong>${escHtml(contact)}</strong></div>
+    <div class="meta-chip">🔧 <strong>${escHtml(assignee)}</strong></div>
+    <div class="meta-chip">📅 <strong>${fmtDate(t.createdTime)}</strong></div>
   `;
+
+  document.getElementById('threadsContent').innerHTML = '<div class="thread-loading">Carregando histórico...</div>';
 
   const backdrop = document.getElementById('modalBackdrop');
   backdrop.style.display = 'flex';
   requestAnimationFrame(() => backdrop.classList.add('open'));
+
+  // Buscar threads
+  try {
+    const res = await fetch(`${BASE}/api/ticket-detail?id=${t.id}&threads=1`);
+    if (!res.ok) throw new Error('Erro ao buscar histórico');
+    const data = await res.json();
+    const threads = data.threads || [];
+
+    if (threads.length === 0) {
+      document.getElementById('threadsContent').innerHTML = '<div class="thread-loading">Nenhuma conversa registrada.</div>';
+      return;
+    }
+
+    document.getElementById('threadsContent').innerHTML = threads.map(th => {
+      const isAgent = th.author?.type === 'AGENT' || th.channel === 'AGENT';
+      const author = th.author ? (th.author.firstName || '') + ' ' + (th.author.lastName || '') : 'Desconhecido';
+      const authorTrim = author.trim() || 'Desconhecido';
+      const initials = authorTrim.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+      const body = stripHtml(th.content || th.summary || '');
+      const time = th.createdTime ? fmtDate(th.createdTime) + ' ' + new Date(th.createdTime).toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}) : '—';
+
+      return `<div class="thread-item">
+        <div class="thread-header">
+          <div class="thread-avatar ${isAgent ? 'agent' : 'customer'}">${initials}</div>
+          <span class="thread-author">${escHtml(authorTrim)}</span>
+          <span class="thread-badge ${isAgent ? 'agent' : 'customer'}">${isAgent ? 'Facilities' : 'Solicitante'}</span>
+          <span class="thread-time">${time}</span>
+        </div>
+        <div class="thread-content ${isAgent ? 'agent' : ''}">${escHtml(body) || '<em>Sem conteúdo</em>'}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('threadsContent').innerHTML = `<div class="thread-loading">Erro ao carregar histórico.</div>`;
+  }
 }
 
 function closeModal() {
@@ -789,34 +635,21 @@ function closeModal() {
   setTimeout(() => { backdrop.style.display = 'none'; }, 200);
 }
 
-// ── UTILS ──
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function stripHtml(s) {
-  return String(s).replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
-}
-
-// ── TELA DE SELEÇÃO DE CG ──
+// ── CG SCREEN ──
 function showCGScreen() {
-  const screen = document.getElementById('cgScreen');
-  screen.style.display = 'flex';
-  requestAnimationFrame(() => screen.style.opacity = '1');
+  const s = document.getElementById('cgScreen');
+  s.style.display = 'flex';
+  requestAnimationFrame(() => s.style.opacity = '1');
 }
-
 function hideCGScreen() {
-  const screen = document.getElementById('cgScreen');
-  screen.style.opacity = '0';
-  setTimeout(() => { screen.style.display = 'none'; }, 200);
+  const s = document.getElementById('cgScreen');
+  s.style.opacity = '0';
+  setTimeout(() => { s.style.display = 'none'; }, 200);
 }
-
 function selectCG(cg) {
-  activeCG = cg;
-  activeStatus = 'all';
-  // Reset botões de status
+  activeCG = cg; activeStatus = 'all';
   document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
   document.querySelector('.btn-filter[data-status="all"]').classList.add('active');
-  // Atualizar badge no header
   document.getElementById('cgActiveName').textContent = cg;
   document.getElementById('cgActiveBadge').style.display = 'flex';
   hideCGScreen();
@@ -826,32 +659,26 @@ function selectCG(cg) {
 // ── EVENTS ──
 document.getElementById('btnRefresh').addEventListener('click', loadTickets);
 document.getElementById('modalClose').addEventListener('click', closeModal);
-document.getElementById('modalBackdrop').addEventListener('click', e => {
-  if (e.target === document.getElementById('modalBackdrop')) closeModal();
-});
-
+document.getElementById('modalBackdrop').addEventListener('click', e => { if (e.target === document.getElementById('modalBackdrop')) closeModal(); });
 document.querySelectorAll('.btn-filter').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeStatus = btn.dataset.status;
-    loadTickets();
+    renderTickets();
   });
 });
-
 let searchTimer;
 document.getElementById('searchInput').addEventListener('input', e => {
   searchQuery = e.target.value;
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => renderTickets(), 250);
+  searchTimer = setTimeout(renderTickets, 250);
 });
-
 document.querySelectorAll('.cg-btn').forEach(btn => {
   btn.addEventListener('click', () => selectCG(btn.dataset.cg));
 });
 
 // ── INIT ──
-// Não carrega nada — aguarda seleção de CG
 document.getElementById('stateLoading').style.display = 'none';
 </script>
 </body>
