@@ -507,24 +507,14 @@ function normalize(s) {
 }
 
 function extractCG(subject, account, cf) {
-  // 1. Tenta pelo campo customField cf (CG-Unidade)
-  if (cf) {
-    const cfVal = cf['CG-Unidade'] || cf['cf_cg_unidade'] || cf['cgUnidade'] || '';
-    if (cfVal) {
-      const v = normalize(cfVal);
-      for (const cg of CG_LIST) {
-        if (v.includes(normalize(cg))) return cg;
-      }
-    }
-  }
-  // 2. Tenta pelo campo account
-  if (account && account.accountName) {
-    const acc = normalize(account.accountName);
+  // 1. Tenta pelo campo cf_unidade (campo customizado do Zoho)
+  if (cf && cf.cf_unidade) {
+    const v = normalize(cf.cf_unidade);
     for (const cg of CG_LIST) {
-      if (acc.includes(normalize(cg))) return cg;
+      if (v.includes(normalize(cg))) return cg;
     }
   }
-  // 3. Tenta pelo assunto
+  // 2. Tenta pelo assunto
   if (!subject) return null;
   const s = normalize(subject);
   for (const cg of CG_LIST) {
