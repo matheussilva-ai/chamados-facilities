@@ -584,7 +584,7 @@ async function loadTickets() {
     if (needsEnrich.length > 0) {
       const enriched = await Promise.all(
         needsEnrich.map(t =>
-          fetch(`${BASE}/api/ticket?id=${t.id}`)
+          fetch(`${BASE}/api/ticket-detail?id=${t.id}`)
             .then(r => r.json())
             .catch(() => null)
         )
