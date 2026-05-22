@@ -570,18 +570,26 @@ async function loadTickets() {
     const rawTickets = data.data || [];
 
     // Enriquecer tickets sem CG identificada buscando individualmente
+    // Limita a 5 por vez com delay para não sobrecarregar o Zoho
     const needsEnrich = rawTickets.filter(t => !extractCG(t.subject, t.account, t.cf));
     if (needsEnrich.length > 0) {
-      const enriched = await Promise.all(
-        needsEnrich.map(t =>
-          fetch(`${BASE}/api/ticket-detail?id=${t.id}`)
-            .then(r => r.json())
-            .catch(() => null)
-        )
-      );
-      enriched.forEach((full, i) => {
-        if (full && full.cf) needsEnrich[i].cf = full.cf;
-      });
+      const BATCH = 5;
+      for (let i = 0; i < needsEnrich.length; i += BATCH) {
+        const batch = needsEnrich.slice(i, i + BATCH);
+        const results = await Promise.all(
+          batch.map(t =>
+            fetch(`${BASE}/api/ticket-detail?id=${t.id}`)
+              .then(r => r.ok ? r.json() : null)
+              .catch(() => null)
+          )
+        );
+        results.forEach((full, j) => {
+          if (full && full.cf) batch[j].cf = full.cf;
+        });
+        if (i + BATCH < needsEnrich.length) {
+          await new Promise(r => setTimeout(r, 300)); // 300ms entre batches
+        }
+      }
     }
     allTickets = rawTickets;
 
