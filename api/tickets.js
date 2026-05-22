@@ -39,7 +39,8 @@ module.exports = async function handler(req, res) {
   try {
     const token = await getAccessToken();
 
-    const url = `https://desk.zoho.com/api/v1/tickets?limit=100&include=contacts,assignee,departments`;
+    const { from = 1 } = req.query;
+    const url = `https://desk.zoho.com/api/v1/tickets?limit=100&from=${from}&include=contacts,assignee,departments`;
 
     const zohoRes = await fetch(url, {
       headers: {
