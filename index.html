@@ -564,10 +564,17 @@ async function loadTickets() {
   setRefreshing(true);
 
   try {
-    const res = await fetch(`${BASE}/api/tickets?limit=100`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    const rawTickets = data.data || [];
+    // Busca 3 páginas de 100 tickets (300 total) para cobrir histórico
+    let rawTickets = [];
+    for (let page = 0; page < 3; page++) {
+      const from = page * 100 + 1;
+      const res = await fetch(`${BASE}/api/tickets?from=${from}`);
+      if (!res.ok) break;
+      const data = await res.json();
+      const batch = data.data || [];
+      rawTickets = rawTickets.concat(batch);
+      if (batch.length < 100) break; // última página
+    }
 
     // Enriquecer tickets sem CG identificada buscando individualmente
     // Limita a 5 por vez com delay para não sobrecarregar o Zoho
