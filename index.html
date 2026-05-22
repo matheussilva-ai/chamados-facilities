@@ -506,15 +506,25 @@ function normalize(s) {
   return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-function extractCG(subject, account) {
-  // 1. Tenta pelo campo account (mais confiável)
+function extractCG(subject, account, cf) {
+  // 1. Tenta pelo campo customField cf (CG-Unidade)
+  if (cf) {
+    const cfVal = cf['CG-Unidade'] || cf['cf_cg_unidade'] || cf['cgUnidade'] || '';
+    if (cfVal) {
+      const v = normalize(cfVal);
+      for (const cg of CG_LIST) {
+        if (v.includes(normalize(cg))) return cg;
+      }
+    }
+  }
+  // 2. Tenta pelo campo account
   if (account && account.accountName) {
     const acc = normalize(account.accountName);
     for (const cg of CG_LIST) {
       if (acc.includes(normalize(cg))) return cg;
     }
   }
-  // 2. Tenta pelo assunto
+  // 3. Tenta pelo assunto
   if (!subject) return null;
   const s = normalize(subject);
   for (const cg of CG_LIST) {
@@ -567,7 +577,23 @@ async function loadTickets() {
     const res = await fetch(`${BASE}/api/tickets?limit=100`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    allTickets = data.data || [];
+    const rawTickets = data.data || [];
+
+    // Enriquecer tickets sem CG identificada buscando individualmente
+    const needsEnrich = rawTickets.filter(t => !extractCG(t.subject, t.account, t.cf));
+    if (needsEnrich.length > 0) {
+      const enriched = await Promise.all(
+        needsEnrich.map(t =>
+          fetch(`${BASE}/api/ticket?id=${t.id}`)
+            .then(r => r.json())
+            .catch(() => null)
+        )
+      );
+      enriched.forEach((full, i) => {
+        if (full && full.cf) needsEnrich[i].cf = full.cf;
+      });
+    }
+    allTickets = rawTickets;
 
     document.getElementById('lastUpdate').innerHTML =
       `<div class="pulse"></div><span>Atualizado ${timeAgo(new Date().toISOString())}</span>`;
@@ -587,7 +613,7 @@ function renderTickets() {
   let filtered = allTickets;
   // Sempre filtra pela CG selecionada
   if (activeCG) {
-    filtered = filtered.filter(t => extractCG(t.subject, t.account) === activeCG);
+    filtered = filtered.filter(t => extractCG(t.subject, t.account, t.cf) === activeCG);
   }
   // Filtro de status
   if (activeStatus === 'all') {
@@ -621,7 +647,7 @@ function renderTickets() {
     const st = statusInfo(t.status);
     const assignee = fullName(t.assignee) !== '—' ? fullName(t.assignee) : 'Não atribuído';
     const contact = fullName(t.contact);
-    const cg = extractCG(t.subject, t.account);
+    const cg = extractCG(t.subject, t.account, t.cf);
 
     return `
     <div class="ticket-card" data-idx="${i}" style="animation-delay:${Math.min(i * 0.03, 0.3)}s">
@@ -696,7 +722,7 @@ function openModal(t) {
   const st = statusInfo(t.status);
   const assignee = fullName(t.assignee) !== '—' ? fullName(t.assignee) : 'Não atribuído';
   const contact = fullName(t.contact);
-  const cg = extractCG(t.subject, t.account);
+  const cg = extractCG(t.subject, t.account, t.cf);
   const dept = t.department ? t.department.name : '—';
 
   document.getElementById('modalTitle').textContent = `#${t.ticketNumber || t.id}`;
