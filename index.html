@@ -478,7 +478,29 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function stripHtml(s) {
-  return String(s).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();
+  if (!s) return '';
+  return String(s)
+    .replace(/<br\s*\/?>/gi, '
+')
+    .replace(/<\/p>/gi, '
+')
+    .replace(/<\/div>/gi, '
+')
+    .replace(/<\/li>/gi, '
+')
+    .replace(/<li[^>]*>/gi, '• ')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/
+{3,}/g, '
+
+')
+    .trim();
 }
 
 // ── FETCH ──
