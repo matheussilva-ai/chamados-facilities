@@ -38,9 +38,8 @@ module.exports = async function handler(req, res) {
     const ticketData = await ticketRes.json();
 
     if (threads) {
-      // include=plainText retorna conteúdo completo sem truncamento
       const threadRes = await fetch(
-        `https://desk.zoho.com/api/v1/tickets/${id}/threads?limit=25&include=plainText`,
+        `https://desk.zoho.com/api/v1/tickets/${id}/threads?limit=25`,
         { headers }
       );
       const threadData = await threadRes.json();
