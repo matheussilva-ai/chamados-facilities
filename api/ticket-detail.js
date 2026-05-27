@@ -34,13 +34,15 @@ module.exports = async function handler(req, res) {
     const token = await getAccessToken();
     const headers = { Authorization: `Zoho-oauthtoken ${token}`, orgId: ZOHO_ORG_ID };
 
-    // Busca detalhes do ticket
     const ticketRes = await fetch(`https://desk.zoho.com/api/v1/tickets/${id}`, { headers });
     const ticketData = await ticketRes.json();
 
-    // Se pediu threads, busca também
     if (threads) {
-      const threadRes = await fetch(`https://desk.zoho.com/api/v1/tickets/${id}/threads?limit=25`, { headers });
+      // include=plainText retorna conteúdo completo sem truncamento
+      const threadRes = await fetch(
+        `https://desk.zoho.com/api/v1/tickets/${id}/threads?limit=25&include=plainText`,
+        { headers }
+      );
       const threadData = await threadRes.json();
       ticketData.threads = threadData.data || [];
     }
