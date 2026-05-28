@@ -156,6 +156,11 @@
     .state-center svg { opacity: 0.25; }
 
 
+    /* DUE DATE */
+    .due-overdue strong { color: var(--red) !important; }
+    .due-urgent strong { color: var(--yellow) !important; }
+    .due-ok strong { color: var(--text2) !important; }
+
     /* PROGRESS BAR */
     .progress-overlay {
       position: fixed; inset: 0; background: var(--bg);
@@ -343,7 +348,8 @@
             <th>ASSUNTO</th>
             <th>SOLICITANTE</th>
             <th>ABERTO EM</th>
-            <th>ATUALIZADO</th>
+            <th>PRAZO</th>
+            <th>PRIORIDADE</th>
           </tr>
         </thead>
         <tbody id="ticketsTbody"></tbody>
@@ -450,6 +456,12 @@ function extractCG(subject, account, cf) {
 }
 
 function statusInfo(s) { return STATUS_MAP[s] || { label: s || '—', cls: 'p-other' }; }
+
+const PRIORITY_MAP = {
+  'High':   { label: '🔴 Alta',   cls: 'p-escalated' },
+  'Medium': { label: '🟡 Média',  cls: 'p-aguardando' },
+  'Low':    { label: '🟢 Baixa',  cls: 'p-ghc' },
+};
 
 function fullName(obj) {
   if (!obj) return '—';
@@ -607,7 +619,8 @@ function renderTickets() {
       <td class="td-subject"><span title="${escHtml(t.subject||'')}">${escHtml(t.subject || '(sem assunto)')}</span></td>
       <td class="td-contact">${escHtml(contact)}</td>
       <td class="td-date">${fmtDate(t.createdTime)}</td>
-      <td class="td-ago">${timeAgo(t.createdTime)}</td>
+      <td class="td-ago ${t.dueDate && new Date(t.dueDate) < new Date() ? 'due-overdue' : ''}">${t.dueDate ? (() => { const d = new Date(t.dueDate); const days = Math.ceil((d - new Date()) / 86400000); return days < 0 ? '<span style="color:var(--red)">Vencido</span>' : days === 0 ? '<span style="color:var(--yellow)">Hoje</span>' : days === 1 ? '<span style="color:var(--yellow)">Amanhã</span>' : d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}); })() : '—'}</td>
+      <td class="td-ago">${t.priority ? (PRIORITY_MAP[t.priority] ? PRIORITY_MAP[t.priority].label : t.priority) : '—'}</td>
     </tr>`;
   }).join('');
 
@@ -650,12 +663,21 @@ async function openModal(t) {
   document.getElementById('modalTitle').textContent = t.subject || '(sem assunto)';
   document.getElementById('modalZohoLink').href = `https://desk.zoho.com/agent/genialcare/facilities/tickets/${t.id}`;
 
+  const priority = t.priority ? PRIORITY_MAP[t.priority] || t.priority : null;
+  const due = t.dueDate ? new Date(t.dueDate) : null;
+  const dueStr = due ? due.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'2-digit'}) : null;
+  const isOverdue = due && due < new Date();
+  const daysLeft = due ? Math.ceil((due - new Date()) / 86400000) : null;
+  const dueLabel = dueStr ? (isOverdue ? `Vencido (${dueStr})` : daysLeft === 0 ? `Vence hoje` : daysLeft === 1 ? `Vence amanhã` : `Vence em ${daysLeft}d (${dueStr})`) : null;
+
   document.getElementById('modalMeta').innerHTML = `
     <div class="meta-chip"><span class="pill ${st.cls}">${st.label}</span></div>
+    ${priority ? `<div class="meta-chip"><span class="pill ${priority.cls}">${priority.label}</span></div>` : ''}
     ${cg ? `<div class="meta-chip">📍 <strong>${cg}</strong></div>` : ''}
     <div class="meta-chip">👤 <strong>${escHtml(contact)}</strong></div>
     <div class="meta-chip">🔧 <strong>${escHtml(assignee)}</strong></div>
     <div class="meta-chip">📅 <strong>${fmtDate(t.createdTime)}</strong></div>
+    ${dueLabel ? `<div class="meta-chip ${isOverdue ? 'due-overdue' : daysLeft <= 2 ? 'due-urgent' : 'due-ok'}">⏰ <strong>${dueLabel}</strong></div>` : ''}
   `;
 
   document.getElementById('threadsContent').innerHTML = '<div class="thread-loading">Carregando histórico...</div>';
