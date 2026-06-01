@@ -698,17 +698,15 @@ async function openModal(t) {
       return;
     }
 
-    // Buscar conteúdo completo para threads truncadas
+    // Buscar conteúdo completo de todas as threads (summary é sempre truncado)
     const enriched = await Promise.all(threads.map(async th => {
-      if (th.isContentTruncated) {
-        try {
-          const r = await fetch(`${BASE}/api/thread-content?ticketId=${t.id}&threadId=${th.id}`);
-          if (r.ok) {
-            const full = await r.json();
-            return { ...th, fullContent: full.content || th.summary };
-          }
-        } catch(e) {}
-      }
+      try {
+        const r = await fetch(`${BASE}/api/thread-content?ticketId=${t.id}&threadId=${th.id}`);
+        if (r.ok) {
+          const full = await r.json();
+          if (full.content) return { ...th, fullContent: full.content };
+        }
+      } catch(e) {}
       return th;
     }));
 
