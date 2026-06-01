@@ -713,7 +713,7 @@ async function openModal(t) {
           <span class="thread-badge ${isAgent ? 'agent' : 'customer'}">${isAgent ? 'Facilities' : 'Solicitante'}</span>
           <span class="thread-time">${time}</span>
         </div>
-        <div class="thread-content ${isAgent ? 'agent' : ''}">${escHtml(body) || '<em>Sem conteúdo</em>'}</div>
+        <div class="thread-content ${isAgent ? 'agent' : ''}">${body ? body.replace(/\n/g, '<br>') : '<em>Sem conteúdo</em>'}</div>
       </div>`;
     }).join('');
   } catch(e) {
