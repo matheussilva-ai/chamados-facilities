@@ -698,12 +698,26 @@ async function openModal(t) {
       return;
     }
 
-    document.getElementById('threadsContent').innerHTML = threads.map(th => {
+    // Buscar conteúdo completo para threads truncadas
+    const enriched = await Promise.all(threads.map(async th => {
+      if (th.isContentTruncated) {
+        try {
+          const r = await fetch(`${BASE}/api/thread-content?ticketId=${t.id}&threadId=${th.id}`);
+          if (r.ok) {
+            const full = await r.json();
+            return { ...th, fullContent: full.content || th.summary };
+          }
+        } catch(e) {}
+      }
+      return th;
+    }));
+
+    document.getElementById('threadsContent').innerHTML = enriched.map(th => {
       const isAgent = th.author?.type === 'AGENT' || th.channel === 'AGENT';
       const author = th.author ? (th.author.firstName || '') + ' ' + (th.author.lastName || '') : 'Desconhecido';
       const authorTrim = author.trim() || 'Desconhecido';
       const initials = authorTrim.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
-      const body = stripHtml(th.content || th.summary || th.body || '');
+      const body = stripHtml(th.fullContent || th.content || th.summary || th.body || '');
       const time = th.createdTime ? fmtDate(th.createdTime) + ' ' + new Date(th.createdTime).toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}) : '—';
 
       return `<div class="thread-item">
